@@ -11,7 +11,9 @@ const processString = () => {
   const fieldset = document.querySelectorAll('fieldset');
   for (const group of fieldset) {
     const str = [];
-    str.push(group.querySelector('#meaning').value);
+    const meaning = group.querySelector('#meaning').value
+    if (meaning === '') continue;
+    str.push(meaning);
     for (const input of group.querySelectorAll('input[id^="sentence"]')) {
       if (input.value) str.push(input.value);
     }
@@ -65,7 +67,7 @@ const createListGroup = () => {
   fieldset.appendChild(sparagraph);
   fieldset.appendChild(button).textContent = '⌄';
 
-  document.body.insertBefore(fieldset, moreListBtn.parentElement);
+  document.querySelector('form').insertBefore(fieldset, moreListBtn.parentElement);
 };
 
 const createSentenceInput = (e, group) => {
