@@ -4,6 +4,31 @@ let listGroupCount = 1;
 const group = document.querySelector(`#listGroup${listGroupCount}`);
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
+const processBtn = document.querySelector('.process');
+
+const processString = () => {
+  let result = '<ul>';
+  const fieldset = document.querySelectorAll('fieldset');
+  for (const group of fieldset) {
+    const str = [];
+    str.push(group.querySelector('#meaning').value);
+    for (const input of group.querySelectorAll('input[id^="sentence"]')) {
+      if (input.value) str.push(input.value);
+    }
+    result += makeList(str);
+  }
+  result = result + '</ul>';
+  console.log(result);
+};
+
+const makeList = str => {
+  let result = '<li>' + str[0];
+
+  for (let sentence of str.slice(1)) {
+    result += `<br><i>${sentence}</i><br>`;
+  }
+  return result + '</li><br>';
+};
 
 const createListGroup = () => {
   ++listGroupCount;
@@ -18,10 +43,10 @@ const createListGroup = () => {
 
   fieldset.setAttribute('id', `listGroup${listGroupCount}`);
 
-  mlabel.setAttribute('for', 'meaning1');
-  minput.setAttribute('id', 'meaning1');
+  mlabel.setAttribute('for', 'meaning');
+  minput.setAttribute('id', 'meaning');
   minput.setAttribute('type', 'text');
-  mparagraph.appendChild(mlabel).textContent = 'Meaning 1';
+  mparagraph.appendChild(mlabel).textContent = 'Meaning';
   mparagraph.appendChild(minput);
 
   slabel.setAttribute('for', 'sentence1');
@@ -62,3 +87,4 @@ const createSentenceInput = (e, group) => {
 
 moreSentenceBtn.addEventListener('click', e => createSentenceInput(e, group));
 moreListBtn.addEventListener('click', createListGroup);
+processBtn.addEventListener('click', processString);
