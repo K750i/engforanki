@@ -65,7 +65,7 @@ const createListGroup = () => {
   fieldset.appendChild(legend).textContent = `List ${listGroupCount}`;;
   fieldset.appendChild(mparagraph);
   fieldset.appendChild(sparagraph);
-  fieldset.appendChild(button).textContent = '⌄';
+  fieldset.appendChild(button).textContent = 'more';
 
   document.querySelector('.meanings').insertBefore(fieldset, moreListBtn.parentElement);
 };
