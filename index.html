@@ -12,38 +12,59 @@
 
 <body>
 
-  <form action="#">
-    <section class="word">
-      <fieldset id="word">
-        <legend>Word</legend>
-        <p>
-          <label for="word_entry">Word</label>
-          <input id="word_entry" type="text">
-        </p>
-      </fieldset>
-    </section>
-    <section class="meanings">
-      <fieldset id="listGroup1">
-        <legend>List 1</legend>
-        <p>
-          <label for="meaning">Meaning</label>
-          <input id="meaning" type="text">
-        </p>
-        <p>
-          <label for="sentence1">Sentence 1</label>
-          <input id="sentence1" type="text">
-        </p>
-        <button class="addsentence" type="button">⌄</button>
-      </fieldset>
+  <main>
+    <form action="#">
+      <section class="word">
+        <fieldset id="word">
+          <p>
+            <label for="word_entry">Word</label>
+            <input id="word_entry" type="text">
+          </p>
+        </fieldset>
+        <fieldset id="phonetics">
+          <p>
+            <label for="phonetic_entry">Phonetics</label>
+            <input id="phonetic_entry" type="text">
+          </p>
+        </fieldset>
+        <fieldset id="part_of_speech">
+          <p>
+            <label for="pos_entry">Part of Speech</label>
+            <input id="pos_entry" type="text">
+          </p>
+        </fieldset>
+      </section>
+      <section class="meanings">
+        <fieldset id="listGroup1">
+          <legend>List 1</legend>
+          <p>
+            <label for="meaning">Meaning</label>
+            <input id="meaning" type="text">
+          </p>
+          <p>
+            <label for="sentence1">Sentence 1</label>
+            <input id="sentence1" type="text">
+          </p>
+          <button class="addsentence" type="button">more</button>
+        </fieldset>
+        <div class="button_wrapper">
+          <button class="addlist" type="button">Add Meaning</button>
+        </div>
+      </section>
+      <section class="notes">
+        <fieldset id="notes">
+          <p>
+            <label for="note_entry">Notes</label>
+            <input id="note_entry" type="text">
+          </p>
+        </fieldset>
+      </section>
       <div>
-        <button class="addlist" type="button">Add Meaning</button>
+        <button class="process" type="button">Process</button><button type="reset">reset</button>
       </div>
-    </section>
-    <div>
-      <button class="process" type="button">Process</button><button type="reset">reset</button>
-    </div>
-  </form>
-  <button id="test" type="button">addnote</button>
+      <button id="test" type="button">addnote</button>
+    </form>
+  </main>
 </body>
 
 </html>

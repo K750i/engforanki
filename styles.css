@@ -16,6 +16,10 @@ section.meanings {
   background: hotpink;
 }
 
+section.notes {
+  background: slateblue;
+}
+
 fieldset {
   position: relative;
   width: 800px;
@@ -39,9 +43,17 @@ fieldset>p label {
 }
 
 input[type="text"] {
-  border: none;
+  border: 1px solid gray;
   width: 100%;
   padding: 5px;
   border-radius: 2px;
   font-size: 1rem;
+}
+
+button {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  background: blanchedalmond;
 }
