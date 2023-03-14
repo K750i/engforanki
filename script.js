@@ -90,3 +90,38 @@ const createSentenceInput = (e, group) => {
 moreSentenceBtn.addEventListener('click', e => createSentenceInput(e, group));
 moreListBtn.addEventListener('click', createListGroup);
 processBtn.addEventListener('click', processString);
+
+document.getElementById('test').addEventListener('click', function () {
+  fetch("http://127.0.0.1:8765", {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      action: 'addNote',
+      version: 6,
+      params: {
+        note: {
+          deckName: 'mydeck',
+          modelName: 'Basic',
+          fields: {
+            Front: 'whatever this is',
+            Back: 'the answer here'
+          },
+          options: {
+            "allowDuplicate": false,
+            "duplicateScope": "deck",
+            "duplicateScopeOptions": {
+              "deckName": "Default",
+              "checkChildren": false,
+              "checkAllModels": false
+            }
+          },
+        }
+      }
+    })
+  }).then((response) => {
+    console.log(response)
+  });
+})
