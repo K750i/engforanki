@@ -62,12 +62,12 @@ const createListGroup = () => {
   button.setAttribute('class', 'addsentence');
   button.addEventListener('click', e => createSentenceInput(e, fieldset));
 
-  fieldset.appendChild(legend).textContent = `List${listGroupCount}`;;
+  fieldset.appendChild(legend).textContent = `List ${listGroupCount}`;;
   fieldset.appendChild(mparagraph);
   fieldset.appendChild(sparagraph);
   fieldset.appendChild(button).textContent = '⌄';
 
-  document.querySelector('form').insertBefore(fieldset, moreListBtn.parentElement);
+  document.querySelector('.meanings').insertBefore(fieldset, moreListBtn.parentElement);
 };
 
 const createSentenceInput = (e, group) => {

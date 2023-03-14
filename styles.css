@@ -1,4 +1,47 @@
 body {
   font-family: sans-serif;
-  background: gainsboro;
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  padding: 30px;
+}
+
+section.word {
+  background: slateblue;
+}
+
+section.meanings {
+  background: hotpink;
+}
+
+fieldset {
+  position: relative;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+}
+
+legend {
+  position: absolute;
+  top: 20px;
+  left: -80px;
+  background: hsla(0 0% 0% / 0.3);
+  color: white;
+  padding: 10px 20px;
+}
+
+fieldset>p label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input[type="text"] {
+  border: none;
+  width: 100%;
+  padding: 5px;
+  border-radius: 2px;
+  font-size: 1rem;
 }
