@@ -7,8 +7,14 @@ const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
 
 const processString = () => {
-  let result = '<ul>';
-  const fieldset = document.querySelectorAll('fieldset');
+  // process main word section
+  const wordFormatted = document.querySelector('#word_entry').value;
+  const phoneticsFormatted = `/${document.querySelector('#phonetic_entry').value}/`;
+  const posFormatted = document.querySelector('#pos_entry').value;
+
+  // process meanings section
+  let meaningFormatted = '<ul>';
+  const fieldset = document.querySelectorAll('fieldset[id^="listGroup"]');
   for (const group of fieldset) {
     const str = [];
     const meaning = group.querySelector('#meaning').value
@@ -17,10 +23,22 @@ const processString = () => {
     for (const input of group.querySelectorAll('input[id^="sentence"]')) {
       if (input.value) str.push(input.value);
     }
-    result += makeList(str);
+    meaningFormatted += makeList(str);
   }
-  result = result + '</ul>';
-  console.log(result);
+  meaningFormatted = meaningFormatted + '</ul>';
+
+  // process notes section
+  let notesFormatted = document.querySelector('#note_entry').value;
+  notesFormatted = notesFormatted.replaceAll(wordFormatted, `<b>${wordFormatted}</b>`);
+
+  const info = {
+    Word: wordFormatted,
+    Phonetics: phoneticsFormatted,
+    'Parts of Speech': posFormatted,
+    Meaning: meaningFormatted,
+    Notes: notesFormatted
+  };
+  addToAnki(info);
 };
 
 const makeList = str => {
@@ -87,33 +105,22 @@ const createSentenceInput = (e, group) => {
   parent.insertBefore(paragraph, e.target);
 };
 
-moreSentenceBtn.addEventListener('click', e => createSentenceInput(e, group));
-moreListBtn.addEventListener('click', createListGroup);
-processBtn.addEventListener('click', processString);
-
-document.getElementById('test').addEventListener('click', function () {
+const addToAnki = info => {
   fetch("http://127.0.0.1:8765", {
     method: "post",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
       action: 'addNote',
       version: 6,
       params: {
         note: {
-          deckName: 'mydeck',
-          modelName: 'Basic',
-          fields: {
-            Front: 'whatever this is',
-            Back: 'the answer here'
-          },
+          deckName: 'English',
+          modelName: 'English Vocab',
+          fields: info,
           options: {
             "allowDuplicate": false,
             "duplicateScope": "deck",
             "duplicateScopeOptions": {
-              "deckName": "Default",
+              "deckName": "English",
               "checkChildren": false,
               "checkAllModels": false
             }
@@ -124,4 +131,8 @@ document.getElementById('test').addEventListener('click', function () {
   }).then((response) => {
     console.log(response)
   });
-})
+};
+
+moreSentenceBtn.addEventListener('click', e => createSentenceInput(e, group));
+moreListBtn.addEventListener('click', createListGroup);
+processBtn.addEventListener('click', processString);
