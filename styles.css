@@ -1,59 +1,67 @@
-body {
-  font-family: sans-serif;
+:root {
+  --bg: #171A30;
+  --main_bg: #2D3250;
+  --input_bg: hsla(231 22% 51%/0.5);
+}
+
+body,
+p,
+fieldset,
+h1 {
   margin: 0;
   padding: 0;
 }
 
-section {
-  padding: 30px;
+body {
+  font-family: Raleway, sans-serif;
+  background: var(--bg);
+  color: white;
 }
 
-section.word {
-  background: slateblue;
+main {
+  background: var(--main_bg);
+  width: 710px;
+  border-radius: 25px;
+  margin: 50px auto;
+  padding: 55px 60px;
 }
 
-section.meanings {
-  background: hotpink;
-}
-
-section.notes {
-  background: slateblue;
+h1 {
+  font-size: 24px;
+  font-weight: 800;
 }
 
 fieldset {
-  position: relative;
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  border: none;
+  border: initial;
 }
 
-legend {
-  position: absolute;
-  top: 20px;
-  left: -80px;
-  background: hsla(0 0% 0% / 0.3);
-  color: white;
-  padding: 10px 20px;
-}
-
-fieldset>p label {
-  display: block;
-  margin-bottom: 8px;
+input[type="text"],
+textarea {
+  background: var(--input_bg);
+  border: initial;
 }
 
 input[type="text"] {
-  border: 1px solid gray;
-  width: 100%;
-  padding: 5px;
-  border-radius: 2px;
-  font-size: 1rem;
+  min-width: 290px;
+  height: 70px;
 }
 
-button {
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  background: blanchedalmond;
+p {
+  position: relative;
+}
+
+p+p {
+  margin-top: 5px;
+}
+
+p>label {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  color: white;
+  opacity: 0.3;
+}
+
+button.addsentence {
+  display: none;
 }
