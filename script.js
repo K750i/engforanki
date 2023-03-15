@@ -5,7 +5,7 @@ const group = document.querySelector(`#listGroup${listGroupCount}`);
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
-const sentenceField = document.querySelector('#sentence1');
+const sentenceField = document.querySelector('#list1_sentence1');
 
 const processString = () => {
   // process main word section
@@ -18,10 +18,10 @@ const processString = () => {
   const fieldset = document.querySelectorAll('fieldset[id^="listGroup"]');
   for (const group of fieldset) {
     const str = [];
-    const meaning = group.querySelector('#meaning').value
+    const meaning = group.querySelector('input[id*="meaning"]').value
     if (meaning === '') continue;
     str.push(meaning);
-    for (const input of group.querySelectorAll('input[id^="sentence"]')) {
+    for (const input of group.querySelectorAll('input[id*="sentence"]')) {
       if (input.value) str.push(input.value);
     }
     meaningFormatted += makeList(str);
@@ -64,14 +64,14 @@ const createListGroup = () => {
 
   fieldset.setAttribute('id', `listGroup${listGroupCount}`);
 
-  mlabel.setAttribute('for', 'meaning');
-  minput.setAttribute('id', 'meaning');
+  mlabel.setAttribute('for', `list${listGroupCount}_meaning`);
+  minput.setAttribute('id', `list${listGroupCount}_meaning`);
   minput.setAttribute('type', 'text');
   mparagraph.appendChild(mlabel).textContent = 'Meaning';
   mparagraph.appendChild(minput);
 
-  slabel.setAttribute('for', 'sentence1');
-  sinput.setAttribute('id', 'sentence1');
+  slabel.setAttribute('for', `list${listGroupCount}_sentence1`);
+  sinput.setAttribute('id', `list${listGroupCount}_sentence1`);
   sinput.setAttribute('type', 'text');
   sinput.addEventListener('keydown', detectKey);
   sinput.addEventListener('blur', addField);
@@ -94,11 +94,12 @@ const createListGroup = () => {
 const createSentenceInput = (e, group) => {
   const count = group.querySelectorAll('input[type="text"]').length;
   const label = document.createElement('label');
-  label.setAttribute('for', `sentence${count}`);
+  const idForSentenceInput = `list${group.id.slice(-1)}_sentence${count}`;
+  label.setAttribute('for', idForSentenceInput);
 
   const input = document.createElement('input');
   input.setAttribute('type', 'text');
-  input.setAttribute('id', `sentence${count}`);
+  input.setAttribute('id', idForSentenceInput);
   input.addEventListener('keydown', detectKey);
   input.addEventListener('blur', addField);
 
