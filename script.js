@@ -5,6 +5,7 @@ const group = document.querySelector(`#listGroup${listGroupCount}`);
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
+const sentenceField = document.querySelector('#sentence1');
 
 const processString = () => {
   // process main word section
@@ -72,6 +73,8 @@ const createListGroup = () => {
   slabel.setAttribute('for', 'sentence1');
   sinput.setAttribute('id', 'sentence1');
   sinput.setAttribute('type', 'text');
+  sinput.addEventListener('keydown', detectKey);
+  sinput.addEventListener('blur', addField);
   sparagraph.appendChild(slabel).textContent = 'Sentence 1';
   sparagraph.appendChild(sinput);
 
@@ -96,6 +99,8 @@ const createSentenceInput = (e, group) => {
   const input = document.createElement('input');
   input.setAttribute('type', 'text');
   input.setAttribute('id', `sentence${count}`);
+  input.addEventListener('keydown', detectKey);
+  input.addEventListener('blur', addField);
 
   const paragraph = document.createElement('p');
   paragraph.appendChild(label).textContent = `Sentence ${count}`;
@@ -103,6 +108,17 @@ const createSentenceInput = (e, group) => {
 
   const parent = e.target.parentElement;
   parent.insertBefore(paragraph, e.target);
+  input.focus();
+};
+
+let lastKeyPressed;
+const detectKey = e => lastKeyPressed = e.key;
+
+const addField = e => {
+  if (lastKeyPressed === 'Tab') {
+    e.currentTarget.parentElement.nextElementSibling.click()
+    lastKeyPressed = null;
+  }
 };
 
 const addToAnki = info => {
@@ -136,3 +152,5 @@ const addToAnki = info => {
 moreSentenceBtn.addEventListener('click', e => createSentenceInput(e, group));
 moreListBtn.addEventListener('click', createListGroup);
 processBtn.addEventListener('click', processString);
+sentenceField.addEventListener('keydown', detectKey);
+sentenceField.addEventListener('blur', addField);
