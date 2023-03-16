@@ -2,21 +2,26 @@
 
 let listGroupCount = 1;
 const wordInput = document.querySelector('#word_entry');
+const phoneticsInput = document.querySelector('#phonetic_entry');
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
 const sentenceField = document.querySelector('#list1_sentence1');
 const resetBtn = document.querySelector('button[type="reset"]');
 
+const formatPhonetics = () => {
+  let text = phoneticsInput.value;
+  if (!(text === '' || text.startsWith('/'))) {
+    phoneticsInput.value = `/${text}/`;
+  }
+};
+
 const processString = () => {
+  if (!wordInput.validity.valid) return;
+
   // process main word section
   const wordFormatted = wordInput.value;
-
-  let phoneticsFormatted = document.querySelector('#phonetic_entry').value;
-  if (!(phoneticsFormatted === '' || phoneticsFormatted.startsWith('/'))) {
-    phoneticsFormatted = `/${phoneticsFormatted}/`;
-  }
-
+  const phoneticsFormatted = phoneticsInput.value
   const posFormatted = document.querySelector('#pos_entry').value;
 
   // process meanings section
@@ -154,4 +159,5 @@ moreSentenceBtn.addEventListener('click', e => createSentenceInput(e.target, e.t
 moreListBtn.addEventListener('click', createListGroup);
 processBtn.addEventListener('click', processString);
 sentenceField.addEventListener('keydown', detectKey);
+phoneticsInput.addEventListener('blur', formatPhonetics);
 resetBtn.addEventListener('click', () => wordInput.focus());

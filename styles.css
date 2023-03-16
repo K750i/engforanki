@@ -107,3 +107,7 @@ button {
 button:first-of-type {
   margin-left: 0;
 }
+
+button:hover {
+	box-shadow: 0 0 6px var(--accent);
+}
