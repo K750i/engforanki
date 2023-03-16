@@ -24,7 +24,7 @@
         <fieldset id="word">
           <p>
             <label for="word_entry">Word</label>
-            <input id="word_entry" type="text">
+            <input id="word_entry" type="text" autofocus required>
           </p>
           <p>
             <label for="phonetic_entry">Phonetics</label>
@@ -41,23 +41,23 @@
           <legend>List 1</legend>
           <p>
             <label for="list1_meaning">Meaning</label>
-            <input id="list1_meaning" type="text">
+            <textarea id="list1_meaning"></textarea>
           </p>
           <p>
             <label for="list1_sentence1">Sentence 1</label>
-            <input id="list1_sentence1" type="text">
+            <textarea id="list1_sentence1"></textarea>
           </p>
           <button class="addsentence" type="button">more</button>
         </fieldset>
         <div class="button_wrapper">
-          <button class="addlist" type="button">Add Meaning</button>
+          <button class="addlist" type="button">+</button>
         </div>
       </section>
       <section class="notes">
         <fieldset id="notes">
           <p>
             <label for="note_entry">Notes</label>
-            <input id="note_entry" type="text">
+            <textarea id="note_entry"></textarea>
           </p>
         </fieldset>
       </section>

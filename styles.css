@@ -2,6 +2,11 @@
   --bg: #171A30;
   --main_bg: #2D3250;
   --input_bg: hsla(231 22% 51%/0.5);
+  --accent: #F9B17A;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body,
@@ -29,6 +34,7 @@ main {
 h1 {
   font-size: 24px;
   font-weight: 800;
+  margin-bottom: 10px;
 }
 
 fieldset {
@@ -39,11 +45,32 @@ input[type="text"],
 textarea {
   background: var(--input_bg);
   border: initial;
+  color: white;
+  font-family: inherit;
 }
 
 input[type="text"] {
   min-width: 290px;
   height: 70px;
+  padding: 20px 20px;
+  padding-bottom: 0;
+}
+
+textarea {
+  resize: none;
+  width: 590px;
+  height: 100px;
+  padding: 35px 20px;
+}
+
+textarea[id*="meaning"] {
+  border: 1px solid var(--accent);
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-left: 5px solid #F9B17A;
+  outline: none;
 }
 
 p {
@@ -64,4 +91,19 @@ p>label {
 
 button.addsentence {
   display: none;
+}
+
+button {
+  margin: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  background: var(--accent);
+  border: initial;
+  border-radius: 3px;
+  font-size: 1.5rem;
+}
+
+button:first-of-type {
+  margin-left: 0;
 }

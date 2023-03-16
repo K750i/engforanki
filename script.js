@@ -1,16 +1,22 @@
 'use strict';
 
 let listGroupCount = 1;
-const group = document.querySelector(`#listGroup${listGroupCount}`);
+const wordInput = document.querySelector('#word_entry');
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
 const sentenceField = document.querySelector('#list1_sentence1');
+const resetBtn = document.querySelector('button[type="reset"]');
 
 const processString = () => {
   // process main word section
-  const wordFormatted = document.querySelector('#word_entry').value;
-  const phoneticsFormatted = `/${document.querySelector('#phonetic_entry').value}/`;
+  const wordFormatted = wordInput.value;
+
+  let phoneticsFormatted = document.querySelector('#phonetic_entry').value;
+  if (!(phoneticsFormatted === '' || phoneticsFormatted.startsWith('/'))) {
+    phoneticsFormatted = `/${phoneticsFormatted}/`;
+  }
+
   const posFormatted = document.querySelector('#pos_entry').value;
 
   // process meanings section
@@ -18,10 +24,11 @@ const processString = () => {
   const fieldset = document.querySelectorAll('fieldset[id^="listGroup"]');
   for (const group of fieldset) {
     const str = [];
-    const meaning = group.querySelector('input[id*="meaning"]').value
+    let meaning = group.querySelector('textarea[id*="meaning"]').value
+    meaning = meaning.charAt(0).toLowerCase() + meaning.slice(1);
     if (meaning === '') continue;
     str.push(meaning);
-    for (const input of group.querySelectorAll('input[id*="sentence"]')) {
+    for (const input of group.querySelectorAll('textarea[id*="sentence"]')) {
       if (input.value) str.push(input.value);
     }
     meaningFormatted += makeList(str);
@@ -40,6 +47,7 @@ const processString = () => {
     Notes: notesFormatted
   };
   addToAnki(info);
+  resetBtn.click();
 };
 
 const makeList = str => {
@@ -56,9 +64,9 @@ const createListGroup = () => {
   const fieldset = document.createElement('fieldset');
   const legend = document.createElement('legend');
   const mlabel = document.createElement('label');
-  const minput = document.createElement('input');
+  const minput = document.createElement('textarea');
   const slabel = document.createElement('label');
-  const sinput = document.createElement('input');
+  const sinput = document.createElement('textarea');
   const mparagraph = document.createElement('p');
   const sparagraph = document.createElement('p');
 
@@ -66,19 +74,16 @@ const createListGroup = () => {
 
   mlabel.setAttribute('for', `list${listGroupCount}_meaning`);
   minput.setAttribute('id', `list${listGroupCount}_meaning`);
-  minput.setAttribute('type', 'text');
   mparagraph.appendChild(mlabel).textContent = 'Meaning';
   mparagraph.appendChild(minput);
 
   slabel.setAttribute('for', `list${listGroupCount}_sentence1`);
   sinput.setAttribute('id', `list${listGroupCount}_sentence1`);
-  sinput.setAttribute('type', 'text');
   sinput.addEventListener('keydown', detectKey);
-  sinput.addEventListener('blur', addField);
   sparagraph.appendChild(slabel).textContent = 'Sentence 1';
   sparagraph.appendChild(sinput);
 
-  const button = document.createElement('button');
+  const button = document.createElement('button');  // hidden button
   button.setAttribute('type', 'button');
   button.setAttribute('class', 'addsentence');
   button.addEventListener('click', e => createSentenceInput(e, fieldset));
@@ -89,37 +94,32 @@ const createListGroup = () => {
   fieldset.appendChild(button).textContent = 'more';
 
   document.querySelector('.meanings').insertBefore(fieldset, moreListBtn.parentElement);
+  minput.focus();
 };
 
-const createSentenceInput = (e, group) => {
-  const count = group.querySelectorAll('input[type="text"]').length;
+const createSentenceInput = (elt, group) => {
+  const count = group.querySelectorAll('textarea').length;
   const label = document.createElement('label');
   const idForSentenceInput = `list${group.id.slice(-1)}_sentence${count}`;
   label.setAttribute('for', idForSentenceInput);
 
-  const input = document.createElement('input');
-  input.setAttribute('type', 'text');
+  const input = document.createElement('textarea');
   input.setAttribute('id', idForSentenceInput);
   input.addEventListener('keydown', detectKey);
-  input.addEventListener('blur', addField);
 
   const paragraph = document.createElement('p');
   paragraph.appendChild(label).textContent = `Sentence ${count}`;
   paragraph.appendChild(input);
 
-  const parent = e.target.parentElement;
-  parent.insertBefore(paragraph, e.target);
-  input.focus();
+  group.insertBefore(paragraph, group.querySelector('button.addsentence'));
 };
 
-let lastKeyPressed;
-const detectKey = e => lastKeyPressed = e.key;
-
-const addField = e => {
-  if (lastKeyPressed === 'Tab') {
-    e.currentTarget.parentElement.nextElementSibling.click()
-    lastKeyPressed = null;
-  }
+const detectKey = e => {
+  if (!e.shiftKey && e.key === 'Tab') {
+    if (e.target.parentElement.matches('p:last-of-type')) {
+      createSentenceInput(e.target, e.target.closest('fieldset'));
+    }
+  };
 };
 
 const addToAnki = info => {
@@ -150,8 +150,8 @@ const addToAnki = info => {
   });
 };
 
-moreSentenceBtn.addEventListener('click', e => createSentenceInput(e, group));
+moreSentenceBtn.addEventListener('click', e => createSentenceInput(e.target, e.target.closest('fieldset')));
 moreListBtn.addEventListener('click', createListGroup);
 processBtn.addEventListener('click', processString);
 sentenceField.addEventListener('keydown', detectKey);
-sentenceField.addEventListener('blur', addField);
+resetBtn.addEventListener('click', () => wordInput.focus());
