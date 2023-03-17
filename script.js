@@ -2,6 +2,7 @@
 
 let listGroupCount = 1;
 const wordInput = document.querySelector('#word_entry');
+const emptyField = document.querySelector('#emptyword');
 const phoneticsInput = document.querySelector('#phonetic_entry');
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');

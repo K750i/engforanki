@@ -56,6 +56,19 @@ input[type="text"] {
   padding-bottom: 0;
 }
 
+span#emptyword {
+  color: var(--accent);
+  margin-left: 10px;
+}
+
+input#word_entry:invalid+span#emptyword {
+  visibility: visible;
+}
+
+input#word_entry:valid+span#emptyword {
+  visibility: hidden;
+}
+
 textarea {
   resize: none;
   width: 590px;
@@ -109,5 +122,5 @@ button:first-of-type {
 }
 
 button:hover {
-	box-shadow: 0 0 6px var(--accent);
+  box-shadow: 0 0 6px var(--accent);
 }
