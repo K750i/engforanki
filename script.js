@@ -4,6 +4,8 @@ let listGroupCount = 1;
 const wordInput = document.querySelector('#word_entry');
 const emptyField = document.querySelector('#emptyword');
 const phoneticsInput = document.querySelector('#phonetic_entry');
+const posField = document.querySelector('#pos_entry');
+const posOpt = document.querySelector('#pos_opt');
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
@@ -17,13 +19,21 @@ const formatPhonetics = () => {
   }
 };
 
+const processPosOpt = function () {
+  if (posField.value === '') return;
+
+  const suffix = `(${[...this.selectedOptions].map(elt => elt.value).join('•')})`;
+  const index = posField.value.indexOf('(') !== -1 ? posField.value.indexOf('(') : posField.value.length;
+  posField.value = posField.value.slice(0, index).trim() + ' ' + suffix;
+};
+
 const processString = () => {
   if (!wordInput.validity.valid) return;
 
   // process main word section
   const wordFormatted = wordInput.value;
   const phoneticsFormatted = phoneticsInput.value
-  const posFormatted = document.querySelector('#pos_entry').value;
+  const posFormatted = posField.value;
 
   // process meanings section
   let meaningFormatted = '<ul>';
@@ -156,9 +166,17 @@ const addToAnki = info => {
   });
 };
 
+const resetForm = () => {
+  posOpt.value = '';
+  wordInput.focus()
+};
+
 moreSentenceBtn.addEventListener('click', e => createSentenceInput(e.target, e.target.closest('fieldset')));
 moreListBtn.addEventListener('click', createListGroup);
 processBtn.addEventListener('click', processString);
 sentenceField.addEventListener('keydown', detectKey);
 phoneticsInput.addEventListener('blur', formatPhonetics);
-resetBtn.addEventListener('click', () => wordInput.focus());
+resetBtn.addEventListener('click', resetForm);
+posOpt.addEventListener('change', processPosOpt);
+
+resetForm();

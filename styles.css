@@ -51,8 +51,8 @@ textarea {
 
 input[type="text"] {
   min-width: 290px;
-  height: 70px;
-  padding: 20px 20px;
+  height: 60px;
+  padding: 15px 15px;
   padding-bottom: 0;
 }
 
@@ -69,11 +69,23 @@ input#word_entry:valid+span#emptyword {
   visibility: hidden;
 }
 
+#pos_opt {
+  font-family: inherit;
+  border: initial;
+  background: var(--input_bg);
+  color: currentColor;
+  padding: 10px;
+  margin-left: 10px;
+  vertical-align: bottom;
+  width: 200px;
+  height: 60px;
+}
+
 textarea {
   resize: none;
   width: 590px;
-  height: 100px;
-  padding: 35px 20px;
+  height: 80px;
+  padding: 25px 15px;
 }
 
 textarea[id*="meaning"] {
@@ -96,8 +108,9 @@ p+p {
 
 p>label {
   position: absolute;
-  top: 10px;
-  left: 20px;
+  font-size: 0.9rem;
+  top: 5px;
+  left: 15px;
   color: white;
   opacity: 0.3;
 }

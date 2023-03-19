@@ -25,7 +25,7 @@
           <p>
             <label for="word_entry">Word</label>
             <input id="word_entry" type="text" autofocus required>
-						<span id="emptyword">Please enter a word</span>
+            <span id="emptyword">Please enter a word</span>
           </p>
           <p>
             <label for="phonetic_entry">Phonetics</label>
@@ -34,6 +34,20 @@
           <p>
             <label for="pos_entry">Part of Speech</label>
             <input id="pos_entry" type="text">
+            <select name="pos_opt" id="pos_opt" multiple>
+              <optgroup label="Type">
+                <option value="derogatory">derogatory</option>
+                <option value="informal">informal</option>
+                <option value="formal">formal</option>
+                <option value="law">law</option>
+                <option value="technical">technical</option>
+              </optgroup>
+              <optgroup label="Region">
+                <option value="British">British</option>
+                <option value="US">US</option>
+                <option value="North America">North America</option>
+              </optgroup>
+            </select>
           </p>
         </fieldset>
       </section>
