@@ -4,27 +4,53 @@ let listGroupCount = 1;
 const wordInput = document.querySelector('#word_entry');
 const emptyField = document.querySelector('#emptyword');
 const phoneticsInput = document.querySelector('#phonetic_entry');
-const posField = document.querySelector('#pos_entry');
+const posInput = document.querySelector('#pos_entry');
 const posOpt = document.querySelector('#pos_opt');
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
+const meaningField = document.querySelector('#list1_meaning');
 const sentenceField = document.querySelector('#list1_sentence1');
 const resetBtn = document.querySelector('button[type="reset"]');
 
-const formatPhonetics = () => {
-  let text = phoneticsInput.value;
-  if (!(text === '' || text.startsWith('/'))) {
-    phoneticsInput.value = `/${text}/`;
+function formatWord() {
+  this.value = this.value.replaceAll('·', '');
+}
+
+function formatPhonetics() {
+  let text = this.value;
+
+  if (text === '') return;
+  if (text.startsWith('[') || text.startsWith('/')) {
+    // assume text surrounded with delimiters, remove it
+    text = text.slice(1, -1);
   }
+
+  this.value = `/${text}/`;
+
 };
 
-const processPosOpt = function () {
-  if (posField.value === '') return;
+function formatMeaning() {
+  if (this.value.endsWith('.') || this.value.endsWith(':')) {
+    this.value = this.value.slice(0, -1);
+  }
+}
+
+function formatSentence() {
+  // specific to bing
+  const junkSuffix = this.value.indexOf('" ·');
+  if (junkSuffix > 0) {
+    this.value = this.value.slice(0, junkSuffix);
+  }
+  this.value = this.value.replaceAll('\"', '\'');
+}
+
+function processPosOpt() {
+  if (posInput.value === '') return;
 
   const suffix = `(${[...this.selectedOptions].map(elt => elt.value).join('•')})`;
-  const index = posField.value.indexOf('(') !== -1 ? posField.value.indexOf('(') : posField.value.length;
-  posField.value = posField.value.slice(0, index).trim() + ' ' + suffix;
+  const index = posInput.value.indexOf('(') !== -1 ? posInput.value.indexOf('(') : posInput.value.length;
+  posInput.value = posInput.value.slice(0, index).trim() + ' ' + suffix;
 };
 
 const processString = () => {
@@ -33,7 +59,7 @@ const processString = () => {
   // process main word section
   const wordFormatted = wordInput.value;
   const phoneticsFormatted = phoneticsInput.value
-  const posFormatted = posField.value;
+  const posFormatted = posInput.value;
 
   // process meanings section
   let meaningFormatted = '<ul>';
@@ -90,12 +116,14 @@ const createListGroup = () => {
 
   mlabel.setAttribute('for', `list${listGroupCount}_meaning`);
   minput.setAttribute('id', `list${listGroupCount}_meaning`);
+  minput.addEventListener('blur', formatMeaning);
   mparagraph.appendChild(mlabel).textContent = 'Meaning';
   mparagraph.appendChild(minput);
 
   slabel.setAttribute('for', `list${listGroupCount}_sentence1`);
   sinput.setAttribute('id', `list${listGroupCount}_sentence1`);
   sinput.addEventListener('keydown', detectKey);
+  sinput.addEventListener('blur', formatSentence);
   sparagraph.appendChild(slabel).textContent = 'Sentence 1';
   sparagraph.appendChild(sinput);
 
@@ -122,6 +150,7 @@ const createSentenceInput = (elt, group) => {
   const input = document.createElement('textarea');
   input.setAttribute('id', idForSentenceInput);
   input.addEventListener('keydown', detectKey);
+  input.addEventListener('blur', formatSentence);
 
   const paragraph = document.createElement('p');
   paragraph.appendChild(label).textContent = `Sentence ${count}`;
@@ -174,8 +203,12 @@ const resetForm = () => {
 moreSentenceBtn.addEventListener('click', e => createSentenceInput(e.target, e.target.closest('fieldset')));
 moreListBtn.addEventListener('click', createListGroup);
 processBtn.addEventListener('click', processString);
+meaningField.addEventListener('blur', formatMeaning);
 sentenceField.addEventListener('keydown', detectKey);
+sentenceField.addEventListener('blur', formatSentence);
+wordInput.addEventListener('blur', formatWord);
 phoneticsInput.addEventListener('blur', formatPhonetics);
+posInput.addEventListener('blur', e => e.target.value = e.target.value.toLowerCase());
 resetBtn.addEventListener('click', resetForm);
 posOpt.addEventListener('change', processPosOpt);
 
