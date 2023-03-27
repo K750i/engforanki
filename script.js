@@ -12,6 +12,7 @@ const processBtn = document.querySelector('.process');
 const meaningField = document.querySelector('#list1_meaning');
 const sentenceField = document.querySelector('#list1_sentence1');
 const resetBtn = document.querySelector('button[type="reset"]');
+const type = ['n', 'adj', 'adv'];
 
 function formatWord() {
   this.value = this.value.replaceAll('·', '');
@@ -31,6 +32,14 @@ function formatPhonetics() {
 };
 
 function formatMeaning() {
+  const phrase = this.value;
+  const indexOfSpace = phrase.indexOf(' ');
+  const prefix = phrase.substring(0, indexOfSpace);
+
+  if (type.includes(prefix)) {
+    this.value = `<sub>${prefix}</sub> ${phrase.slice(indexOfSpace + 1)}`;
+  }
+
   if (this.value.endsWith('.') || this.value.endsWith(':')) {
     this.value = this.value.slice(0, -1);
   }
