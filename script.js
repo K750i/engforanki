@@ -12,7 +12,7 @@ const processBtn = document.querySelector('.process');
 const meaningField = document.querySelector('#list1_meaning');
 const sentenceField = document.querySelector('#list1_sentence1');
 const resetBtn = document.querySelector('button[type="reset"]');
-const type = ['n', 'adj', 'adv'];
+const type = ['n', 'v', 'adj', 'adv'];
 
 function formatWord() {
   this.value = this.value.replaceAll('·', '');
