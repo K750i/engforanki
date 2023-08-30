@@ -28,8 +28,7 @@ function formatPhonetics() {
   }
 
   this.value = `/${text}/`;
-
-};
+}
 
 function formatMeaning() {
   const phrase = this.value;
@@ -46,28 +45,37 @@ function formatMeaning() {
 }
 
 function formatSentence() {
-  // specific to bing
-  const junkSuffix = this.value.indexOf('" ·');
-  if (junkSuffix > 0) {
-    this.value = this.value.slice(0, junkSuffix);
+  const originalText = this.value;
+  let formattedText = originalText.trim();
+
+  if (formattedText.charAt(0) == '"' && formattedText.charAt(formattedText.length - 1)) {
+    formattedText = formattedText.substring(1, formattedText.length - 1);
   }
-  this.value = this.value.replaceAll('\"', '\'');
+
+  if (formattedText.charAt(formattedText.length - 1) == '.') {
+    formattedText = formattedText.substring(0, formattedText.length - 1);
+  }
+
+  this.value = formattedText;
 }
 
 function processPosOpt() {
   if (posInput.value === '') return;
 
-  const suffix = `(${[...this.selectedOptions].map(elt => elt.value).join('•')})`;
-  const index = posInput.value.indexOf('(') !== -1 ? posInput.value.indexOf('(') : posInput.value.length;
+  const suffix = `(${[...this.selectedOptions].map((elt) => elt.value).join('•')})`;
+  const index =
+    posInput.value.indexOf('(') !== -1
+      ? posInput.value.indexOf('(')
+      : posInput.value.length;
   posInput.value = posInput.value.slice(0, index).trim() + ' ' + suffix;
-};
+}
 
 const processString = () => {
   if (!wordInput.validity.valid) return;
 
   // process main word section
   const wordFormatted = wordInput.value;
-  const phoneticsFormatted = phoneticsInput.value
+  const phoneticsFormatted = phoneticsInput.value;
   const posFormatted = posInput.value;
 
   // process meanings section
@@ -75,7 +83,7 @@ const processString = () => {
   const fieldset = document.querySelectorAll('fieldset[id^="listGroup"]');
   for (const group of fieldset) {
     const str = [];
-    let meaning = group.querySelector('textarea[id*="meaning"]').value
+    let meaning = group.querySelector('textarea[id*="meaning"]').value;
     meaning = meaning.charAt(0).toLowerCase() + meaning.slice(1);
     if (meaning === '') continue;
     str.push(meaning);
@@ -95,13 +103,13 @@ const processString = () => {
     Phonetics: phoneticsFormatted,
     'Parts of Speech': posFormatted,
     Meaning: meaningFormatted,
-    Notes: notesFormatted
+    Notes: notesFormatted,
   };
   addToAnki(info);
   resetBtn.click();
 };
 
-const makeList = str => {
+const makeList = (str) => {
   let result = '<li>' + str[0];
 
   for (let sentence of str.slice(1)) {
@@ -136,12 +144,12 @@ const createListGroup = () => {
   sparagraph.appendChild(slabel).textContent = 'Sentence 1';
   sparagraph.appendChild(sinput);
 
-  const button = document.createElement('button');  // hidden button
+  const button = document.createElement('button'); // hidden button
   button.setAttribute('type', 'button');
   button.setAttribute('class', 'addsentence');
-  button.addEventListener('click', e => createSentenceInput(e, fieldset));
+  button.addEventListener('click', (e) => createSentenceInput(e, fieldset));
 
-  fieldset.appendChild(legend).textContent = `List ${listGroupCount}`;;
+  fieldset.appendChild(legend).textContent = `List ${listGroupCount}`;
   fieldset.appendChild(mparagraph);
   fieldset.appendChild(sparagraph);
   fieldset.appendChild(button).textContent = 'more';
@@ -168,17 +176,17 @@ const createSentenceInput = (elt, group) => {
   group.insertBefore(paragraph, group.querySelector('button.addsentence'));
 };
 
-const detectKey = e => {
+const detectKey = (e) => {
   if (!e.shiftKey && e.key === 'Tab') {
     if (e.target.parentElement.matches('p:last-of-type')) {
       createSentenceInput(e.target, e.target.closest('fieldset'));
     }
-  };
+  }
 };
 
-const addToAnki = info => {
-  fetch("http://127.0.0.1:8765", {
-    method: "post",
+const addToAnki = (info) => {
+  fetch('http://127.0.0.1:8765', {
+    method: 'post',
     body: JSON.stringify({
       action: 'addNote',
       version: 6,
@@ -188,28 +196,30 @@ const addToAnki = info => {
           modelName: 'English Vocab',
           fields: info,
           options: {
-            "allowDuplicate": false,
-            "duplicateScope": "deck",
-            "duplicateScopeOptions": {
-              "deckName": "English",
-              "checkChildren": false,
-              "checkAllModels": false
-            }
+            allowDuplicate: false,
+            duplicateScope: 'deck',
+            duplicateScopeOptions: {
+              deckName: 'English',
+              checkChildren: false,
+              checkAllModels: false,
+            },
           },
-        }
-      }
-    })
+        },
+      },
+    }),
   }).then((response) => {
-    console.log(response)
+    console.log(response);
   });
 };
 
 const resetForm = () => {
   posOpt.value = '';
-  wordInput.focus()
+  wordInput.focus();
 };
 
-moreSentenceBtn.addEventListener('click', e => createSentenceInput(e.target, e.target.closest('fieldset')));
+moreSentenceBtn.addEventListener('click', (e) =>
+  createSentenceInput(e.target, e.target.closest('fieldset'))
+);
 moreListBtn.addEventListener('click', createListGroup);
 processBtn.addEventListener('click', processString);
 meaningField.addEventListener('blur', formatMeaning);
@@ -217,7 +227,7 @@ sentenceField.addEventListener('keydown', detectKey);
 sentenceField.addEventListener('blur', formatSentence);
 wordInput.addEventListener('blur', formatWord);
 phoneticsInput.addEventListener('blur', formatPhonetics);
-posInput.addEventListener('blur', e => e.target.value = e.target.value.toLowerCase());
+posInput.addEventListener('blur', (e) => (e.target.value = e.target.value.toLowerCase()));
 resetBtn.addEventListener('click', resetForm);
 posOpt.addEventListener('change', processPosOpt);
 
