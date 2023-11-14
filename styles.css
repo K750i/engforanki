@@ -26,12 +26,13 @@ body {
 main {
   background: var(--main_bg);
   width: 710px;
-  border-radius: 25px;
+  border-radius: 12px;
   margin: 12px auto;
   padding: 24px 40px;
 }
 
 h1 {
+  color: #ccc;
   font-size: 24px;
   font-weight: lighter;
   margin-bottom: 10px;
@@ -54,6 +55,16 @@ input[type='text'] {
   height: 60px;
   padding: 15px 15px;
   padding-bottom: 0;
+}
+
+input[type='checkbox'] {
+  margin: 8px 0 12px;
+}
+
+input[type='checkbox'] + label {
+  margin-right: 8px;
+  font-size: 14px;
+  color: #ccc;
 }
 
 span#emptyword {

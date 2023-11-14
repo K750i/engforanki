@@ -18,7 +18,7 @@
 <body>
 
   <main>
-    <h1>Anki English Vocab Deck Entry</h1>
+    <h1>Entry Form for English Deck</h1>
     <form action="#">
       <section class="word">
         <fieldset id="word">
@@ -53,6 +53,18 @@
               </optgroup>
             </select>
           </p>
+          <div>
+            <input type="checkbox" id="noun" name="pos" value="noun" tabindex="-1" />
+            <label for="noun">noun</label>
+            <input type="checkbox" id="adjective" name="pos" value="adjective" tabindex="-1" />
+            <label for="adjective">adjective</label>
+            <input type="checkbox" id="verb" name="pos" value="verb" tabindex="-1" />
+            <label for="verb">verb</label>
+            <input type="checkbox" id="adverb" name="pos" value="adverb" tabindex="-1" />
+            <label for="adverb">adverb</label>
+            <input type="checkbox" id="phrase" name="pos" value="phrase" tabindex="-1" />
+            <label for="phrase">phrase</label>
+          </div>
         </fieldset>
       </section>
       <section class="meanings">
@@ -81,7 +93,7 @@
         </fieldset>
       </section>
       <div>
-        <button class="process" type="button">Process</button><button type="reset">reset</button>
+        <button class="process" type="button">Add</button><button type="reset">reset</button>
       </div>
     </form>
   </main>

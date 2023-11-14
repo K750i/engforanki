@@ -1,11 +1,17 @@
 'use strict';
 
 let listGroupCount = 1;
+let partofspeech = [];
 const wordInput = document.querySelector('#word_entry');
 const emptyField = document.querySelector('#emptyword');
 const phoneticsInput = document.querySelector('#phonetic_entry');
 const posInput = document.querySelector('#pos_entry');
 const posOpt = document.querySelector('#pos_opt');
+const nounInput = document.querySelector('#noun');
+const adjInput = document.querySelector('#adjective');
+const verbInput = document.querySelector('#verb');
+const adverbInput = document.querySelector('#adverb');
+const phraseInput = document.querySelector('#phrase');
 const moreListBtn = document.querySelector('.addlist');
 const moreSentenceBtn = document.querySelector('.addsentence');
 const processBtn = document.querySelector('.process');
@@ -184,6 +190,15 @@ const detectKey = (e) => {
   }
 };
 
+const buildPartofspeech = (e) => {
+  if (e.target.checked) {
+    partofspeech.push(e.target.value);
+  } else {
+    partofspeech = partofspeech.filter((v) => v !== e.target.value);
+  }
+  posInput.value = partofspeech.join(', ');
+};
+
 const addToAnki = (info) => {
   fetch('http://127.0.0.1:8765', {
     method: 'post',
@@ -194,6 +209,7 @@ const addToAnki = (info) => {
         note: {
           deckName: 'English',
           modelName: 'English Vocab',
+          tags: posInput.value.includes('phrase') ? ['phrase'] : '',
           fields: info,
           options: {
             allowDuplicate: false,
@@ -214,6 +230,7 @@ const addToAnki = (info) => {
 
 const resetForm = () => {
   posOpt.value = '';
+  partofspeech = [];
   wordInput.focus();
 };
 
@@ -230,5 +247,10 @@ phoneticsInput.addEventListener('blur', formatPhonetics);
 posInput.addEventListener('blur', (e) => (e.target.value = e.target.value.toLowerCase()));
 resetBtn.addEventListener('click', resetForm);
 posOpt.addEventListener('change', processPosOpt);
+nounInput.addEventListener('change', buildPartofspeech);
+adjInput.addEventListener('change', buildPartofspeech);
+verbInput.addEventListener('change', buildPartofspeech);
+adverbInput.addEventListener('change', buildPartofspeech);
+phraseInput.addEventListener('change', buildPartofspeech);
 
 resetForm();
